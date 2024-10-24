@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Ostoslista from './pages/shoppingList'; 
+import HomeScreen from './pages/Home';
+import { TouchableOpacity, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+const Stack = createStackNavigator();
+
+function showInfoAlert() {
+  Alert.alert(
+    "Info",
+    "Poista ostoslista roskakorinapilla\n\nOstolistassa\n\nLyhyt painallus -> Ostos tehty\nPitkä painallus -> Poista ostos listasta",
+    [{ text: "OK" }] 
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerRight: () => (
+            <TouchableOpacity onPress={showInfoAlert} style={{ paddingRight: 16 }}>
+              <Icon name="info-circle" size={24} color="#000" />
+            </TouchableOpacity>
+          ),
+        }}
+      >
+        <Stack.Screen name="Etusivu" component={HomeScreen} />
+        <Stack.Screen name="Ostoslista" component={Ostoslista} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
